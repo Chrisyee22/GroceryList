@@ -15,8 +15,8 @@ class UsersController < ApplicationController
         create_session(@user)
         redirect_to root_path
     else
-      flash.new[:alert] = "There was an error in the sign up proccess. Please try again"
-      render :new
+      flash.now[:alert] = "There was an error in the sign up proccess. Please try again"
+      render
     end
   end
 end
