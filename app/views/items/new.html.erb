@@ -1,0 +1,17 @@
+<div class="container">
+  <h1>Add Item</h1>
+  <div class="col-md-8">
+<%= form_for [@list, @item] do |f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title  %>
+
+  <%= f.label :amount %>
+  <%= f.text_field :amount%>
+
+  <%= f.label :completed %>
+  <%= f.check_box :completed%>
+
+  <%= f.submit "Add to list"%>
+ <% end %>
+
+</div>

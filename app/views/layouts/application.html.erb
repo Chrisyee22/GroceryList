@@ -1,14 +1,52 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Bloclist</title>
+    <title>Grocery List</title>
     <%= csrf_meta_tags %>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+    <div class="container">
+      <ul class="nav nav-tabs">
+        <li><%= link_to "Lists", lists_path %></li>
+      </ul>
+        <div class="jumbotron text-center">
+          <h1>Groceries<h1>
+            <p>Welcome to the list</p>
+        </div>
+        <div class="text-center">
+          <div>
+
+            <% if current_user %>
+              <li class="pull-right"><%= link_to "#{current_user.name} -Sign Out", session_path(current_user), method: :delete %></li>
+            <% else %>
+              <li class="pull-right"><%= link_to "Sign In", new_session_path %></li>
+              <li class="pull-right"><%= link_to "Sign Up", new_user_path %></li>
+            <% end %>
+              <%= link_to "Home", root_path, class:'btn btn-primary'%>
+              
+
+          </div>
+        </div>
+      </div>
+
+      <% if flash[:notice] %>
+       <div class="alert alert-success">
+         <button type="button" class="close" data-dismiss="alert">&times;</button>
+         <%= flash[:notice] %>
+       </div>
+     <% elsif flash[:alert] %>
+       <div class="alert alert-warning">
+         <button type="button" class="close" data-dismiss="alert">&times;</button>
+         <%= flash[:alert] %>
+       </div>
+     <% end %>
     <%= yield %>
+
+
   </body>
 </html>
