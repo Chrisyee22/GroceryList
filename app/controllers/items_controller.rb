@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
 
+
   def show
     @item = Item.find(params[:id])
   end
@@ -10,16 +11,12 @@ class ItemsController < ApplicationController
   end
 
   def create
-    @item = Item.new
-    @item.title = params[:item][:title]
-    @item.amount = params[:item][:amount]
-    @item.completed = params[:item][:completed]
     @list = List.find(params[:list_id])
-    @item.list = @list
+    @item = @list.items.build(item_params)
 
     if @item.save
       flash[:notice] = "Item was added to list"
-      redirect_to [@list, @item]
+      redirect_to [@list]
     else
       flash.now[:alert] = "There was an error adding the item to the list. Please try again"
       render :new
@@ -32,13 +29,10 @@ class ItemsController < ApplicationController
 
   def update
     @item = Item.find(params[:id])
-    @item.title = params[:item][:title]
-    @item.amount = params[:item][:amount]
-    @item.completed = params[:item][:completed]
-
+    @item.assign_attributes(item_params)
     if @item.save
       flash[:notice] =  "New Item added"
-      redirect_to [@item.list, @item]
+      redirect_to [@item.list]
     else
       flash[:notice] = "There was an error saving the new item. Please try again."
       render :edit
@@ -55,4 +49,11 @@ class ItemsController < ApplicationController
       render :index
     end
   end
+
+  private
+  def item_params
+    params.require(:item).permit(:title, :amount, :completed)
+  end
+
+
 end

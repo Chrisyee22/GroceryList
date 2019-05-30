@@ -10,28 +10,26 @@
   </head>
 
   <body>
+    <div id="background">
+    <img src="http://drive.google.com/uc?export=view&id=11KHb3u1wqD0psZQn92g7bYJyw0m6fu9d" class="stretch" alt="" />
+    </div>
     <div class="container">
       <ul class="nav nav-tabs">
-        <li><%= link_to "Lists", lists_path %></li>
+        <%= link_to "Home", root_path, class:'btn btn-primary'%>
+        <%= link_to "Lists", lists_path, class: 'btn btn-primary'%>
+        <% if current_user %>
+          <li class="pull-right"><%= link_to "#{current_user.name} -Sign Out", session_path(current_user), method: :delete %></li>
+        <% else %>
+          <li class="pull-right"><%= link_to "Sign In", new_session_path %></li>
+          <li class="pull-right"><%= link_to "Sign Up", new_user_path %></li>
+        <% end %>
+
       </ul>
         <div class="jumbotron text-center">
           <h1>Groceries<h1>
             <p>Welcome to the list</p>
         </div>
-        <div class="text-center">
-          <div>
 
-            <% if current_user %>
-              <li class="pull-right"><%= link_to "#{current_user.name} -Sign Out", session_path(current_user), method: :delete %></li>
-            <% else %>
-              <li class="pull-right"><%= link_to "Sign In", new_session_path %></li>
-              <li class="pull-right"><%= link_to "Sign Up", new_user_path %></li>
-            <% end %>
-              <%= link_to "Home", root_path, class:'btn btn-primary'%>
-              
-
-          </div>
-        </div>
       </div>
 
       <% if flash[:notice] %>

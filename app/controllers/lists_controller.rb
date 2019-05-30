@@ -1,4 +1,7 @@
 class ListsController < ApplicationController
+  before_action :require_sign_in
+  before_action :authorize_user, except: [:index, :new, :create]
+
   def index
     @lists = List.all
   end
@@ -12,10 +15,8 @@ class ListsController < ApplicationController
   end
 
   def create
-    @list = List.new
-    @list.name = params[:list][:name]
-    @list.description = params[:list][:description]
-    @list.public = params[:list][:public]
+    @list = List.new(list_params)
+    @list.user = current_user
 
     if @list.save
       redirect_to @list, notice: "List was saved successfully."
@@ -31,9 +32,7 @@ class ListsController < ApplicationController
 
   def update
     @list = List.find(params[:id])
-    @list.name = params[:list][:name]
-    @list.description = params[:list][:description]
-    @list.public = params[:list][:public]
+    @list.assign_attributes(list_params)
 
     if @list.save
        flash[:notice] = "list was updated."
@@ -55,4 +54,20 @@ class ListsController < ApplicationController
        render :show
      end
    end
+
+   private
+
+   def list_params
+     params.require(:list).permit(:name, :description, :public)
+   end
+
+   def authorize_user
+     list = List.find(params[:id])
+
+     unless current_user == list.user || current_user.admin?
+       flash[:alert] = "You must be an admin to do that."
+       redirect_to lists_path
+     end
+   end
+
 end

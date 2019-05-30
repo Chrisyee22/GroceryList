@@ -2,7 +2,9 @@ require 'rails_helper'
 
 
 RSpec.describe ItemsController, type: :controller do
-  let(:my_list) { List.create!(name:  RandomData.random_word, description: RandomData.random_sentence) }
+  let(:my_user) { User.create!(name: "Misty Gish", email: "mistygish@mail.com", password: "password")}
+  let(:my_list) { List.create!(user: my_user, name: RandomData.random_word, description: RandomData.random_sentence) }
+
   let(:my_item) { my_list.items.create!(title: RandomData.random_word, amount: RandomData.random_number, completed: false) }
 
 
@@ -42,7 +44,7 @@ RSpec.describe ItemsController, type: :controller do
 
     it "redirects to the list with new item" do
       post :create, params: { list_id: my_list.id, item: { title: RandomData.random_word, amount: RandomData.random_number, completed: false }}
-      expect(response).to redirect_to [my_list, Item.last]
+      expect(response).to redirect_to my_list
     end
   end
   #
@@ -87,7 +89,7 @@ RSpec.describe ItemsController, type: :controller do
       new_completed = false
 
       put :update, params: { list_id: my_list.id, id: my_item.id, item: {title: new_title, amount: new_amount, completed: new_completed } }
-      expect(response).to redirect_to [my_list, my_item]
+      expect(response).to redirect_to my_list
     end
   end
 

@@ -1,17 +1,25 @@
 require 'rails_helper'
+include SessionsHelper
 
 RSpec.describe ListsController, type: :controller do
-  let(:my_list) { List.create!(name: RandomData.random_word, description: RandomData.random_sentence) }
 
-     describe "GET index" do
-       it "returns http success" do
-         get :index
-         expect(response).to have_http_status(:success)
-       end
+  let(:my_user) { User.create!(name: "Misty Gish", email: "mistygish@mail.com", password: "password")}
+  let(:my_list) { List.create!(user: my_user, name: RandomData.random_word, description: RandomData.random_sentence) }
 
-       it "assigns my_list to @lists" do
-         get :index
-         expect(assigns(:lists)).to eq([my_list])
+  context "signed-in user" do
+    before do
+      create_session(my_user)
+    end
+
+    describe "GET index" do
+      it "returns http success" do
+        get :index
+        expect(response).to have_http_status(:success)
+    end
+
+    it "assigns my_list to @lists" do
+        get :index
+        expect(assigns(:lists)).to eq([my_list])
        end
      end
 
@@ -120,4 +128,5 @@ RSpec.describe ListsController, type: :controller do
        expect(response).to redirect_to lists_path
      end
    end
+ end
 end

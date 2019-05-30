@@ -1,53 +1,47 @@
 <div class="container">
 
+  <h1><%= @list.name %></h1>
 
-<h1><%= @list.name %></h1>
+   <%= link_to "Edit List", edit_list_path, class: 'btn btn-success' %>
 
- <%= link_to "Edit List", edit_list_path, class: 'btn btn-success' %>
-
- <div class="row">
-   <div class="col-md-8">
-     <p class="lead"><%= @list.description %></p>
-     <table class="table table-hover table-bordered">
-       <thead>
-         <tr>
-           <th>Title</th>
-           <th>Quantity</th>
-           <th>In the cart</th>
-           <th>Delete</th>
-         </tr>
-       </thead>
-       <tbody>
-         <% @list.items.each do |item| %>
+   <div class="row">
+     <div class="col-md-8">
+       <p class="lead"><%= @list.description %></p>
+       <table class="table table-hover table-bordered">
+         <thead>
            <tr>
-             <td>
-               <strong>
-                 <p><%= link_to item.title, list_item_path(@list, item) %></p>
-               </strong>
-             </td>
-             <td class="text-info">
-               <%= item.amount %>
-             </td>
-             <td class="check_box">
-               <%= item.completed %>
-             </td>
-             <td>
-               <%= link_to list_item_path(item), remote: true, method: :delete do %>
-                 <span class="glyphicon glyphicon-remove"></span>
-               <% end %>
-             </td>
+             <th>Title</th>
+             <th>Quantity</th>
+             <th>In the cart</th>
            </tr>
-           <% end %>
-       </tbody>
-     </table>
-         </div>
-       </div>
-
+         </thead>
+         <tbody>
+           <% @list.items.each do |item| %>
+             <tr>
+               <td>
+                 <strong>
+                   <% if current_user %>
+                   <p><%= link_to item.title, list_item_path(@list, item) %></p>
+                   <% end %>
+                 </strong>
+               </td>
+               <td class="text-info">
+                 <%= item.amount %>
+               </td>
+               <td class="check_box">
+                 <%= item.completed %>
+               </td>
+             </tr>
+             <% end %>
+         </tbody>
+       </table>
+       <% if current_user %>
+       <%= link_to "New Item", new_list_item_path(@list), class: 'btn btn-success' %>
+       <%= link_to "Delete list", @list, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure you want to delete this list?' } %>
+       <% end %>
+      </div>
+     </div>
+     </div>
 
    </div>
-   <div class="col-md-4">
-     <%= link_to "New Item", new_list_item_path(@list), class: 'btn btn-success' %>
-     <%= link_to "Delete list", @list, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure you want to delete this list?' } %>
-   </div>
- </div>
  </div>
