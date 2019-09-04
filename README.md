@@ -1,6 +1,6 @@
 # README
 
-# Bloclist
+# GroceryList
 ****
 Bloclist is a ruby on rails application that makes group shopping easier. With Bloclist you are able to share a grocery list with your friends and family so that no items get forgotten. Once signed in you will all be able to add and delete items from your grocery list as you place items into the cart. Finally grocery shopping can now be a divide and conquer activity.
 
